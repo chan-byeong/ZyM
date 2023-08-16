@@ -13,19 +13,21 @@ import axios from 'axios'
 
 function Group() {
 
-  const [groupData, setGroupData] = useState();
+  const [groupData, setGroupData] = useState([]);
   const [isModalOpen , setIsModalOpen] = useState();
   const [friendEmail, setfriendEmail] = useState('');
 
+  const [fetchingData , setfetchingData] = useState();
+
   useEffect(()=>{
     fetchData();
-  },[])
+  },[fetchingData])
 
   const fetchData = async () =>{
     try {
-      const response = await axios.get(baseUrl+'/api/GroupPageData'); // API 엔드포인트 설정
+      const response = await axios.get(baseUrl+'/api/GroupPageData?id=6'); // API 엔드포인트 설정
       setGroupData(response.data); // 데이터를 상태에 설정
-      console.log(groupData);
+      console.log(response.data);
     } catch (error) {
       console.error('마이페이지 데이터 패치 에러', error);
     }
@@ -47,9 +49,21 @@ function Group() {
     setIsModalOpen(false);
   }
 
+  //?email=${friendEmail}?id=6
   const fetchAddfriend = async (friendEmail) => {
-      axios.post(baseUrl+`/api/GroupPageAddFriend?email=${friendEmail}`)
-        .then(res => console.log(res))
+      axios.post(baseUrl+`/api/GroupPageAddFriend`, 
+        {
+          "setting" : friendEmail,
+          "id" : 6,
+        },
+        {
+          headers :{
+            "Contents-type" : "application/json"
+          }
+        }
+       
+      )
+        .then(res => setfetchingData(true))
         .catch(err => console.log(err))
   }
 
@@ -79,22 +93,25 @@ function Group() {
         )}
         <GroupBox>
           {
-            // groupData.map((e,i)=>(
-            //     <Status/> //props로 nickname , OnOff 넘기기
-            //   )
-            // )
+             groupData.map((element,i)=>(
+                 <Status key={i} personalData={element}/> //props로 nickname , OnOff 넘기기
+               )
+             )
           }
-          <Status/>
-          <Status/>
-          <Status/>
-          <Status/>
-          <Status/>
-          <Status/>
-          <Status/>
-          <Status/>
-          <Status/>
-          <Status/>
-          <Status/>
+          {
+            /**
+            <Status groupData={groupData}/>
+            <Status groupData={groupData}/>
+            <Status groupData={groupData}/>
+            <Status groupData={groupData}/>
+            <Status groupData={groupData}/>
+            <Status groupData={groupData}/>
+            <Status groupData={groupData}/>
+            <Status groupData={groupData}/>
+             * 
+             */
+          }
+
 
         </GroupBox>
         <Nav/>
@@ -118,7 +135,7 @@ const Box = styled.div`
   top : 165px;
   width : 128px;
   height : 44px;
-  border : 2px solid ${YELLOW};
+  border : 2px solid ${BLUE};
   border-radius : 10px;
   display : flex;
   align-items : center;
@@ -129,7 +146,7 @@ const Box = styled.div`
 
 const BtnPlus = styled.div`
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
   margin-right : 10px;
 
   cursor : pointer;

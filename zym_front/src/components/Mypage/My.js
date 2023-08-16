@@ -1,13 +1,27 @@
 import {useState,useEffect} from 'react'
-import {BLUE , YELLOW,Wrapper,baseUrl} from '../../styles/common.js'
+import {BLUE , YELLOW,Wrapper,baseUrl,zmzmee} from '../../styles/common.js'
 import Nav from '../Nav.js'
 
 import styled from 'styled-components';
 import axios from 'axios';
 
+import {useParams} from 'react-router-dom'
+
+
 function My() {
 
-  const [myPageData, setmyPageData] = useState();
+  const [myPageData, setmyPageData] = useState(
+    {
+      nickName:"좌병덕",
+      introduction:null,
+      level:0,
+      weight:0,
+      muscleMass:0,
+      fatMass:0,
+      exerciseRecord:[]
+      } 
+  );
+  const {id} = useParams();
 
   useEffect(()=>{
     fetchData();
@@ -15,26 +29,16 @@ function My() {
 
   const fetchData = async () =>{
     try {
-      const response = await axios.get(baseUrl+'/api/MyPageData',    
+      const response = await axios.get(baseUrl+`/api/MyPageData?id=6`,    
       { withCredentials : true,
       }); // API 엔드포인트 설정
       setmyPageData(response.data); // 데이터를 상태에 설정
-      console.log(myPageData);
+      console.log(response.data);
     } catch (error) {
       console.error('마이페이지 데이터 패치 에러', error);
     }
   }
-  /*
-  {
-  "nickName":"좌병덕",
-  "introduction":null,
-  "level":0,
-  "weight":0,
-  "muscleMass":0,
-  "fatMass":0,
-  "exerciseRecord":[]
-  } 
-*/
+
 
   return (
     <>
@@ -43,12 +47,12 @@ function My() {
         <Box>
           <Box3>
             <CharBox>
-              <img src='../../images/kakaoIcon.png' alt='춘식이'/>
-              <div>Lv. 6</div>
+              <Char level={myPageData.level}></Char>
+              <div>Lv. {myPageData.level}</div>
             </CharBox>
             <InfoBox>
-              <div>닉네임</div>
-              <div className='intro'>한줄소개?</div>
+              <div>{myPageData.nickName}</div>
+              <div className='intro'>{myPageData.introduction}</div>
             </InfoBox>
           </Box3>
           <Stat>
@@ -58,9 +62,9 @@ function My() {
               <span>체지방량</span>
             </Th>
             <div style={{position : "relative"}}>
-              <R1>50</R1>
-              <R2>26</R2>
-              <R3>23</R3>
+              <R1>{myPageData.weight}</R1>
+              <R2>{myPageData.muscleMass}</R2>
+              <R3>{myPageData.fatMass}</R3>
             </div>
           </Stat>
         </Box>
@@ -68,25 +72,29 @@ function My() {
           <Box4 >
             <Title2>기록</Title2>
             <span>
-              <SetTime>세트/시간</SetTime> 
+              <SetTime>세트</SetTime> 
             </span>
           </Box4>
 
           <Box5>
-            {/* 데이터 받아와서 배열 처리 
-            짝/홀 스타일 다르게 처리하기*/}
-            <ItemBox>
-              <Item1></Item1>
-              <Item2></Item2>
-            </ItemBox>
-            <ItemBox>
-              <Item1></Item1>
-              <Item2></Item2>
-            </ItemBox>
-            <ItemBox>
-              <Item1></Item1>
-              <Item2></Item2>
-            </ItemBox>
+            {
+              myPageData.exerciseRecord.map((e,i)=>(
+                i%2 === 0 ?
+                (
+                <ItemBox>
+                  <Item1>{e.exerciseType}</Item1>
+                  <Item2>{e.sett}</Item2>
+                </ItemBox>
+                ):
+                (
+                <ItemBox>
+                  <Item1 odd={true}>{e.exerciseType}</Item1>
+                  <Item2 odd={true}>{e.sett}</Item2>
+                </ItemBox>
+                )
+              ))
+            }
+
           </Box5>
 
         </Box2>
@@ -142,14 +150,6 @@ const CharBox = styled.div`
   position : relative;
   
   //border : 1px solid black;
-
-  & > img {
-    width : 90px;
-    height : 90px;
-    border-radius : 50%;
-    border : 3px solid ${BLUE};
-  }
-
   & > div {
     position : absolute;
     bottom : 20px;
@@ -164,6 +164,18 @@ const CharBox = styled.div`
     font-size: 14px;
     font-weight : 600;
   }
+`;
+
+const Char = styled.section`
+    width : 90px;
+    height : 90px;
+    border-radius : 50%;
+    border : 3px solid ${BLUE};
+
+    margin-top : 18px;
+    
+    background-image : ${({ level }) => `url(${zmzmee[level]})`};
+    background-size : cover;
 `;
 
 const InfoBox = styled.div`
@@ -247,6 +259,11 @@ const SetTime = styled.div`
   font-size: 16px;
   font-weight: 700;
   line-height: normal;
+  margin-right : 38px;
+
+  &::before {
+    content : "✔"
+  }
 `;
 
 const ItemBox = styled.div`
@@ -264,6 +281,9 @@ const Item1 = styled.div`
   justify-content: center;
   align-items: center;
 
+  font-size : 14px;
+  font-weight : 700;
+
   border-radius: 10px;
   border: 2px solid #D2D2D2;
   background: #FFF;
@@ -276,6 +296,9 @@ const Item2 = styled.div`
   padding: 16px 22px;
   justify-content: center;
   align-items: center;
+
+  font-size : 14px;
+  font-weight : 700;
 
   border-radius: 10px;
   background: #3970FF;

@@ -8,6 +8,7 @@ import My from './components/Mypage/My'
 import Setting from './components/Settings/Setting';
 import LoginPage from './components/LoginPage';
 import Calendar from './components/Calendar/Calendar';
+import FriendsMy from './components/Mypage/FriendsMy';
 
 import GlobalStyles from './styles/GlobalStyle';
 function App() {
@@ -15,12 +16,13 @@ function App() {
     <BrowserRouter>
     <GlobalStyles/> 
     <Routes>
-      <Route path="/" element={<Home/>}/>
+      <Route path="/:id" element={<Home/>}/>
       <Route path="/my" element={<My/>}/>
       <Route path="/setting" element={<Setting/>}/>
       <Route path="/group" element={<Group/>}/>
       <Route path="/calendar" element={<Calendar/>}/>
       <Route path="/login" element={<LoginPage/>}/>
+      <Route path="/friend/:id" element={<FriendsMy/>}/>
     </Routes>
   </BrowserRouter>
   );

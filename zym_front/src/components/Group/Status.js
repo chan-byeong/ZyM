@@ -1,26 +1,37 @@
 import React from 'react'
 import { styled } from 'styled-components'
-import {BLUE , YELLOW,Wrapper,baseUrl} from '../../styles/common.js'
+import {BLUE , YELLOW,baseUrl,zmzmee_status} from '../../styles/common.js'
 import axios from 'axios'
 
+import { useNavigate } from 'react-router-dom'
 
-function Status() {
+function Status({personalData}) {
 
-  //어떤 친구인지 모름..
+  const navigate = useNavigate();
+  
   const visitFriend = async () => {
-    axios.get(baseUrl+'/api/GroupPageToFriendPageData')
+    console.log(personalData.id);
+    await axios.get(baseUrl+`/api/GroupPageToFriendPageData?email=${personalData.id}`,
+    {
+      withCredentials : true,
+    }
+    ).then(res => {
+      console.log(res.data.id);
+      navigate(`/friend/${res.data.id}`)
+    })
+    .catch(err => console.log(err))
   }
 
 
   return (
-    <Container onClick={visitFriend}>
-      <CharBox></CharBox>
+    <Container onClick={visitFriend} onOff={personalData.currentlyExercise}>
+      <CharBox onOff={personalData.currentlyExercise}></CharBox>
       <Info>
         <div>
-          닉네임
+          {personalData.nickName}
         </div>
         <div className='onOff'>
-          ON
+          {personalData.currentlyExercise ? "운동 중!" : "쉬는 중..."}
         </div>
       </Info>
     </Container>
@@ -30,11 +41,13 @@ function Status() {
 export default Status
 
 const Container = styled.div`
- flex-basis: calc(25% - 10px);
+  flex-basis: calc(25% - 10px);
   height : 128px;
   margin : 4px;
-  border-radius : 5px;
-  background-color : ${BLUE};
+  border-radius : 10px;
+  //background-color : ${BLUE};
+  border : 1px solid ${ ({onOff}) => onOff? BLUE : "#eee" };
+
   
   &:hover { 
     background-color : ${YELLOW};
@@ -50,6 +63,10 @@ const CharBox = styled.div`
   display : flex;
   justify-content : center;
   align-items : center;
+  //${ ({onOff}) => onOff? BLUE : "#eee" };
+  background-image : ${({ onOff }) => onOff ? `url(${zmzmee_status[1]})`:`url(${zmzmee_status[0]})`};
+  background-size : cover;
+  background-position : center;
   //border : 1px solid white;
 `;
 

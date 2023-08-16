@@ -26,6 +26,9 @@ function Calendar() {
               if(e === date.getDate()){
                   return (<Days today={true}>{e}</Days>); 
               }
+              else if([1,4,9,13].includes(e)){
+                  return (<Days work={true}>{e}</Days>);
+              }
               else{
                   return (<Days>{e}</Days>)
               }
@@ -33,9 +36,13 @@ function Calendar() {
               )}
           </Box>
         </DayBox>
-
-        
       </CalendarBox>
+      <Box1>
+        <Box2><p>총 운동시간</p><div>2:05:29</div></Box2>
+        <Box2><p>오늘 운동시간</p><div>0:30:29</div></Box2>
+        <Box2><p>연속</p><div>0일차</div></Box2>
+        <Box2><p>운동일수</p><div>5일째</div></Box2>
+      </Box1>
       <Nav/>
     </Wrapper>
   )
@@ -53,7 +60,7 @@ font-weight: 700;
 const CalendarBox = styled.div`
   width: 346px;
   height: 412px;
-  margin-top : 54px;
+  margin-top : 40px;
 
   border-radius: 10px;
   background: var(--d-9-d-9-d-9, #3970FF);
@@ -97,10 +104,53 @@ const Days = styled.div`
   border-radius: 10px;
   background-color : transparent;
 
+  position : relative;
+
   ${props => props.today &&
     `
       background-color : ${YELLOW};
       color : ${BLUE};
     `
+  }
+
+${props => props.work &&
+    `
+      color: ${YELLOW};
+      &::before {
+        content : "";
+        display : block;
+        width : 13px;
+        height : 13px;
+        border-radius : 50%;
+        background-color : ${YELLOW};
+
+        position : absolute;
+        top : 25px;
+      }
+    `
+  }
+`;
+
+const Box1 = styled.div`
+  display : flex;
+  flex-wrap : wrap;
+  width : 330px;
+  margin : 0 auto;
+
+  margin-top: 14px;
+`;
+
+const Box2 = styled.div`
+  width : 165px;
+  height : 76px;
+
+  & > p {
+    font-size: 13px;
+    font-weight : 700;
+  }
+
+  & > div{
+    font-size: 20px;
+    font-weight : 700;
   }
 `;

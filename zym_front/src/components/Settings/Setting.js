@@ -19,9 +19,19 @@ function Setting() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(baseUrl+`/api/nickname-setting?name=${nickName}`);
-
-      console.log('Nickname change successful:', response.data);
+      const response = await axios.post(baseUrl+`/api/nickname-setting`,
+      {
+        "setting" : nickName,
+        "id" : 6,
+      },
+      {
+        withCredentials : true,
+        headers : {
+          "Content-Type" : "application/json"
+        }
+      });
+      setNickName('');
+      //console.log('Nickname change successful:', response.data);
     } catch (error) {
       console.error('Error changing nickname:', error);
     }
@@ -35,11 +45,22 @@ function Setting() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(baseUrl+`/api/introduction-setting?intro=${introduce}`);
-
-      console.log('소개정보 change successful:', response.data);
+      const response = await axios.post(baseUrl+`/api/introduction-setting`,
+      {
+        "setting" : introduce,
+        "id" : 6,
+      },
+      { 
+        withCredentials : true,
+        headers : {
+          "Content-Type" : "application/json"
+        }
+      }
+      );
+      setIntroduce('');
+      //console.log('소개 SUCCESS', response.ok);
     } catch (error) {
-      console.error('Error changing 소개정보:', error);
+      console.error('소개 ERROR', error);
     }
   }
 
