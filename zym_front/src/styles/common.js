@@ -9,4 +9,8 @@ export const Wrapper = styled.div`
   width : 390px;
   padding : 0 22px;
   padding-top : 47px;
+
+  position : relative;
 `;
+
+export const baseUrl = "https://remember.run.goorm.site";

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCalendar ,faUser } from "@fortawesome/free-regular-svg-icons";
 import {faHouse,faUserGroup,faGear } from "@fortawesome/free-solid-svg-icons";
-import {Link} from 'react-router-dom'
+import {Link , useMatch} from 'react-router-dom'
 import { BLUE } from '../styles/common';
 
 function Nav() {
@@ -22,10 +22,9 @@ function Nav() {
           <FontAwesomeIcon icon={faHouse} size="2xl" style={{color: "#727479",}}/>
           <div>홈</div>
         </Link3>
-        <Link2 to="/my" >
-         <FontAwesomeIcon icon={faUser} size="2xl" style={{color: "#727479",}}/>
-          <div>마이</div>
-        </Link2>
+        <LinkTo to="/my" icon={faUser} >
+         마이
+        </LinkTo>
         <Link2 to="/setting" >
           <FontAwesomeIcon icon={faGear} size="2xl" style={{color: "#727479",}} />
           <div>설정</div>
@@ -37,15 +36,25 @@ function Nav() {
 
 export default Nav
 
+const LinkTo = ({to , children,icon}) => {
+  const match = useMatch(to);
+  return (
+    <Link2 to={to} active={match}>
+        <FontAwesomeIcon icon={icon} size="2xl" style={{color: "#727479"}}/>
+        <div>{children}</div>
+    </Link2>
+  )
+}
+
 const Container = styled.div`
-  position : fixed;
+  position : absolute;
   bottom:0;
   z-index : 10;
-  width: 390px;
+  width: 350px;
   height : 110px;
-  padding :0 12px;
-  padding-bottom : 34px;
-  margin : 0 auto;
+  //padding :0 12px;
+  //padding-bottom : 34px;
+  //margin : 0 auto;
   background-color : #fff;
 `;
 
@@ -59,6 +68,18 @@ const Box = styled.div`
 
 const Link2 = styled(Link)`
   text-align : center;
+
+  ${props => 
+    props.active &&
+    `
+      background-color : ${BLUE};
+      & > div {
+        color : #fff;
+      }
+    `
+    
+    };
+
 `;
 
 const Link3 = styled(Link2)`

@@ -1,12 +1,19 @@
 import React from 'react'
 import { styled } from 'styled-components'
-import {BLUE , YELLOW,Wrapper} from '../../styles/common.js'
-
+import {BLUE , YELLOW,Wrapper,baseUrl} from '../../styles/common.js'
+import axios from 'axios'
 
 
 function Status() {
+
+  //어떤 친구인지 모름..
+  const visitFriend = async () => {
+    axios.get(baseUrl+'/api/GroupPageToFriendPageData')
+  }
+
+
   return (
-    <Container>
+    <Container onClick={visitFriend}>
       <CharBox></CharBox>
       <Info>
         <div>

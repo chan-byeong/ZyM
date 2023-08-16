@@ -1,30 +1,91 @@
-import React from 'react'
+import {useState,useEffect} from 'react'
 import {BLUE , YELLOW,Wrapper} from '../../styles/common.js'
 import Nav from '../Nav.js'
 import { styled } from 'styled-components'
+import axios from 'axios';
+import { baseUrl } from '../../styles/common.js';
+
+import Timer from './Timer.js'
 
 function Home() {
+
+  const [second, setSecond] = useState(0);
+  const [isRunning , setIsRunning] = useState(false);
+
+  const [homeData , setHomeData] = useState({
+    continuousNumOfExerciseDays:0,
+    level : 0,
+    todayExerciseTime: null,
+    currentlyExercise: isRunning
+  })
+
+  useEffect(()=>{
+    axios.get(baseUrl+'/api/HomePageData',   
+    { 
+      headers : {
+      'Content-Type' : 'application/json',
+      'ngrok-skip-browser-warning': '69420',
+      }
+    }
+    ).then(res => {
+      console.log(res.data);
+      //setter data
+      //setHomeData
+    }).catch(err => console.log(err,'홈데이터 에러'));
+  }
+  ,[])
+
+
+  const handleTimer = (e) => {
+
+    if(e.target.name === 'start'){
+      setIsRunning(true)
+    }
+    else {
+      setIsRunning(false);
+      //setTimeout(()=>{pauseApi()}, 1000);
+      //console.log(time);
+    }
+  }
+
+  // /api/pauseBtn?time=00:00:00
+  // const pauseApi = async () => {
+  //   let hh,mm,ss;
+  //   time.h < 10 ? hh = '0' + time.h : hh = time.h;
+  //   time.m < 10 ? mm = '0' + time.m : mm = time.m;
+  //   time.s < 10 ? ss = '0' + time.s : ss = time.s;
+  //   console.log(`/api/pauseBtn?time=${hh}:${mm}:${ss}`);
+  //   const response = await axios.post(`/api/pauseBtn?time=${hh}:${mm}:${ss}`)
+  //     .then(res => (console.log(res)))
+  //     .catch(err => console.log(err));
+  // }
 
   
   return (
     <>
       <Wrapper>
         <Box1>
-          <Item>0일째 운동 중</Item>
-          <Item2>Lv. 0</Item2>
+          <Item>{homeData.continuousNumOfExerciseDays}일째 운동 중</Item>
+          <Item2>Lv. {homeData.level}</Item2>
         </Box1>
         <Box2></Box2>
         <Box3>  
-          <Timer/>
+          <TimeBox>
+            <Timer 
+            isRunning={isRunning}
+             second={second} 
+             setSecond={setSecond}
+             />
+          </TimeBox>
           <BtnGroup>
-            <Btn2>멈춰!</Btn2>
+            <Btn2 onClick={handleTimer} name='stop'>멈춰!</Btn2>
             운동
-            <Btn>시작!</Btn>
+            <Btn onClick={handleTimer} name='start'>시작!</Btn>
           </BtnGroup>
 
         </Box3>
+        <Nav/>
       </Wrapper>
-      <Nav/>
     </>
 
   )
@@ -90,11 +151,14 @@ const Item2 = styled(Item)`
   color : #000;
 `;
 
-const Timer = styled.div`
+const TimeBox = styled.div`
   width : 277px;
   height : 76px;
-  border : 1px solid ${BLUE};
+  //border : 1px solid ${BLUE};
   margin : 0 auto;
+  display :flex;
+  align-items: center;
+  justify-content :center;
 `;
 
 const BtnGroup = styled.div`

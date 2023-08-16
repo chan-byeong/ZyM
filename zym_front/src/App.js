@@ -6,6 +6,8 @@ import Home from './components/Home/Home';
 import Group from './components/Group/Group';
 import My from './components/Mypage/My'
 import Setting from './components/Settings/Setting';
+import LoginPage from './components/LoginPage';
+import Calendar from './components/Calendar/Calendar';
 
 import GlobalStyles from './styles/GlobalStyle';
 function App() {
@@ -17,7 +19,8 @@ function App() {
       <Route path="/my" element={<My/>}/>
       <Route path="/setting" element={<Setting/>}/>
       <Route path="/group" element={<Group/>}/>
-      <Route path="/calendar" element={<></>}/>
+      <Route path="/calendar" element={<Calendar/>}/>
+      <Route path="/login" element={<LoginPage/>}/>
     </Routes>
   </BrowserRouter>
   );

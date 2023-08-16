@@ -1,5 +1,5 @@
-import React from 'react'
-import {BLUE , YELLOW,Wrapper} from '../../styles/common.js'
+import {useState,useEffect} from 'react'
+import {BLUE , YELLOW,Wrapper,baseUrl} from '../../styles/common.js'
 import Nav from '../Nav.js'
 import Status from './Status.js'
 
@@ -7,9 +7,32 @@ import { styled } from 'styled-components'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
+import axios from 'axios'
+
 
 
 function Group() {
+
+  const [groupData, setGroupData] = useState();
+
+  useEffect(()=>{
+    fetchData();
+  },[])
+
+  const fetchData = async () =>{
+    try {
+      const response = await axios.get(baseUrl+'/api/GroupPageData'); // API 엔드포인트 설정
+      setGroupData(response.data); // 데이터를 상태에 설정
+      console.log(groupData);
+    } catch (error) {
+      console.error('마이페이지 데이터 패치 에러', error);
+    }
+  }
+
+  const addFriend = () => {
+    
+  }
+
   return (
     <>
       <Wrapper>
@@ -19,6 +42,12 @@ function Group() {
           <FontAwesomeIcon icon={faUserPlus} size="lg" style={{color: "#000000",}} />
         </Box>
         <GroupBox>
+          {
+            // groupData.map((e,i)=>(
+            //     <Status/> //props로 nickname , OnOff 넘기기
+            //   )
+            // )
+          }
           <Status/>
           <Status/>
           <Status/>
@@ -32,8 +61,8 @@ function Group() {
           <Status/>
 
         </GroupBox>
+        <Nav/>
       </Wrapper>
-      <Nav/>
     </>
 
   )
