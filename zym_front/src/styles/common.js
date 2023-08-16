@@ -10,6 +10,9 @@ export const Wrapper = styled.div`
   padding : 0 22px;
   padding-top : 47px;
 
+  margin : 0 auto;
+  border : 1px solid ${BLUE};
+
   position : relative;
 `;
 

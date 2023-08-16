@@ -7,7 +7,7 @@ import google from '../images/googleIcon.png'
 import facebook from '../images/facebookIcon.png'
 import kakao from '../images/kakaoIcon.png'
 import email from '../images/emailIcon.svg'
-import logo from "../images/zym_logo.png";
+import logo from "../images/myz_logo.png";
 
 import axios from 'axios';
 
@@ -23,8 +23,17 @@ function LoginPage() {
     formdata.append('username', 'kan0202@naver.com')
     formdata.append('password', '1234')
 
-    const res = await axios.post(baseUrl+"/login", formdata)
-    console.log(res);
+    const res = await axios.post(baseUrl+"/login", formdata,
+    {
+      headers: {
+      'Content-Type': 'application/x-www-form-urlencoded', // 요청 데이터의 형식
+      },
+      withCredentials : true,
+    }
+    ,)
+    .then(res => console.log(res))
+    .catch(err => console.log(err, "Email 로그인 오류"))
+    
   }
 
   return (

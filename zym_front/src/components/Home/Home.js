@@ -21,14 +21,10 @@ function Home() {
 
   useEffect(()=>{
     axios.get(baseUrl+'/api/HomePageData',   
-    { 
-      headers : {
-      'Content-Type' : 'application/json',
-      'ngrok-skip-browser-warning': '69420',
-      }
+    { withCredentials : true,
     }
     ).then(res => {
-      console.log(res.data);
+      console.log(res);
       //setter data
       //setHomeData
     }).catch(err => console.log(err,'홈데이터 에러'));
@@ -96,7 +92,7 @@ export default Home
 const Box1 = styled.div`
   width : 100%;
   height : 65px;
-  background-color : #eee;
+  //background-color : #eee;
   margin-top : 25px;
 
   display: flex;
@@ -111,7 +107,7 @@ const Box2 = styled.div`
   margin-top : 25px;
   border-radius : 10px;
 
-  background-color : #eee;
+  //background-color : #eee;
 `;
 
 const Box3 = styled.div`
@@ -121,7 +117,7 @@ const Box3 = styled.div`
   margin-top : 25px;
   border-radius : 10px;
 
-  background-color : #eee;
+  //background-color : #eee;
   
 
   display :flex;

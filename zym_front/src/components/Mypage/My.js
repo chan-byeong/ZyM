@@ -15,7 +15,9 @@ function My() {
 
   const fetchData = async () =>{
     try {
-      const response = await axios.get(baseUrl+'/api/MyPageData'); // API 엔드포인트 설정
+      const response = await axios.get(baseUrl+'/api/MyPageData',    
+      { withCredentials : true,
+      }); // API 엔드포인트 설정
       setmyPageData(response.data); // 데이터를 상태에 설정
       console.log(myPageData);
     } catch (error) {

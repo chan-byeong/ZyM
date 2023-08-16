@@ -14,6 +14,8 @@ import axios from 'axios'
 function Group() {
 
   const [groupData, setGroupData] = useState();
+  const [isModalOpen , setIsModalOpen] = useState();
+  const [friendEmail, setfriendEmail] = useState('');
 
   useEffect(()=>{
     fetchData();
@@ -29,8 +31,30 @@ function Group() {
     }
   }
 
-  const addFriend = () => {
-    
+  const handleModal = (e) => {
+    let ok = e.target.getAttribute('name') === "open";
+    setIsModalOpen(ok);
+  }
+
+  const handleModalContentClick = (e) => {
+    e.stopPropagation();
+  };
+
+  const handleAddFriend = () => {
+    fetchAddfriend(friendEmail);
+    //console.log(friendEmail);
+    setfriendEmail('');
+    setIsModalOpen(false);
+  }
+
+  const fetchAddfriend = async (friendEmail) => {
+      axios.post(baseUrl+`/api/GroupPageAddFriend?email=${friendEmail}`)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+  }
+
+  const handleEmail = (e) => {
+    setfriendEmail(e.target.value);
   }
 
   return (
@@ -38,9 +62,21 @@ function Group() {
       <Wrapper>
         <Title>그룹</Title>
         <Box>
-          <BtnPlus>친구 추가</BtnPlus>
+          <BtnPlus name="open" onClick={handleModal}>친구 추가</BtnPlus>
           <FontAwesomeIcon icon={faUserPlus} size="lg" style={{color: "#000000",}} />
         </Box>
+        {isModalOpen&&(
+          <ModalBack onClick={handleModal}>
+            <AddBox onClick={handleModalContentClick}>
+              <AddBox2>
+                <p>추가할 친구의 이메일<br/> 주소를 입력해주세요.</p>
+                <input value={friendEmail} onChange={handleEmail}/>
+                <Btn1 onClick={handleModal}>취소</Btn1>
+                <Btn onClick={handleAddFriend}>확인</Btn>
+              </AddBox2>
+            </AddBox>
+          </ModalBack>
+        )}
         <GroupBox>
           {
             // groupData.map((e,i)=>(
@@ -95,6 +131,8 @@ const BtnPlus = styled.div`
   font-size: 17px;
   font-weight: 700;
   margin-right : 10px;
+
+  cursor : pointer;
 `;
 
 const GroupBox = styled.div`
@@ -108,3 +146,92 @@ const GroupBox = styled.div`
   overflow-x : auto;
 `;
 
+const ModalBack = styled.div`
+  position :absolute;
+  top : 0;
+  left : 0;
+  width : 400px;
+  height: 100%;
+  background-color : rgba(0,0,0,.5);
+  z-index : 5;
+`;
+
+const AddBox = styled.div`
+  width: 275px;
+  height: 150px;
+
+  border-radius: 10px;
+  border-top: 5px solid ${BLUE};
+  border-right: 5px solid ${BLUE};
+  border-left: 5px solid ${BLUE};
+  background-color : #fff;
+
+  position : absolute;
+  top : 290px;
+  left : 60px;
+  z-index : 6;
+`;
+
+const AddBox2 = styled.div`
+  display :flex;
+  flex-direction : column;
+  align-items : center;
+  justify-content : center;
+
+  position : relative;
+
+  & > p {
+    text-align : center;
+    padding: 18px;
+
+    color: #000;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 129.336%; /* 19.4px */
+    letter-spacing: 1.5px;
+  }
+
+  & > input {
+    outline :none;
+    width: 247.216px;
+    height: 28.068px;
+    border-radius: 10px;
+    border: 2px solid #FEDF34;
+    background: #FFF;
+    padding: 3px;
+  }
+
+  /* & > button {
+    width: 142.5px;
+    height: 41.563px;
+
+    position : absolute;
+    bottom : -20px;
+
+    border-radius: 0px 0px 10px 0px;
+    border: 2px solid #FFF;
+    background: #3970FF;
+  } */
+`;
+
+const Btn =  styled.button`
+    width: 134px;
+    height: 41.563px;
+
+    position : absolute;
+    bottom : -55px;
+    right: 0;
+
+    color : #fff;
+    font-size: 15px;
+    border-radius: 0px 0px 10px 0px;
+    border: 2px solid #FFF;
+    background: #3970FF;
+`;
+
+const Btn1 = styled(Btn)`
+  
+  border-radius: 0px 0px 0px 10px;
+
+  left : 0;
+`;

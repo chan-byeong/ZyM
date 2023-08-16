@@ -22,9 +22,10 @@ function Nav() {
           <FontAwesomeIcon icon={faHouse} size="2xl" style={{color: "#727479",}}/>
           <div>홈</div>
         </Link3>
-        <LinkTo to="/my" icon={faUser} >
-         마이
-        </LinkTo>
+        <Link2 to="/my" >
+          <FontAwesomeIcon icon={faUser} size="2xl" style={{color: "#727479",}}/>
+          <div>마이</div>
+        </Link2>
         <Link2 to="/setting" >
           <FontAwesomeIcon icon={faGear} size="2xl" style={{color: "#727479",}} />
           <div>설정</div>
@@ -49,7 +50,7 @@ const LinkTo = ({to , children,icon}) => {
 const Container = styled.div`
   position : absolute;
   bottom:0;
-  z-index : 10;
+  z-index : 4;
   width: 350px;
   height : 110px;
   //padding :0 12px;
