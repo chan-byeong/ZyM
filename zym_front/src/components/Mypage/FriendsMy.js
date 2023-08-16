@@ -92,31 +92,19 @@ function FriendsMy() {
               friendData.exerciseRecord.map((e,i)=>(
                 i%2 === 0 ?
                 (
-                <ItemBox key={i}> 
-                  <Item1></Item1>
-                  <Item2></Item2>
-                </ItemBox>
-                ):
-                (
-                <ItemBox  key={i}>
-                  <Item1 odd={true}></Item1>
-                  <Item2 odd={true}></Item2>
-                </ItemBox>
-                )
+                  <ItemBox>
+                    <Item1>{e.exerciseType}</Item1>
+                    <Item2>{e.sett}</Item2>
+                  </ItemBox>
+                  ):
+                  (
+                  <ItemBox>
+                    <Item1 odd={true}>{e.exerciseType}</Item1>
+                    <Item2 odd={true}>{e.sett}</Item2>
+                  </ItemBox>
+                  )
               ))
             }
-            <ItemBox>
-              <Item1></Item1>
-              <Item2></Item2>
-            </ItemBox>
-            <ItemBox>
-              <Item1></Item1>
-              <Item2></Item2>
-            </ItemBox>
-            <ItemBox>
-              <Item1></Item1>
-              <Item2></Item2>
-            </ItemBox>
           </Box5>
 
         </Box2>
