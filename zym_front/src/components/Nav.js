@@ -18,7 +18,7 @@ function Nav() {
           <FontAwesomeIcon icon={faUserGroup} size="2xl" style={{color: "#727479",}}/>
           <div>그룹</div>
         </Link2>
-        <Link3 to="/6" >
+        <Link3 to="/home/6" >
           <FontAwesomeIcon icon={faHouse} size="2xl" style={{color: "#727479",}}/>
           <div>홈</div>
         </Link3>

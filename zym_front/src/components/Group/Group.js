@@ -29,7 +29,7 @@ function Group() {
       setGroupData(response.data); // 데이터를 상태에 설정
       console.log(response.data);
     } catch (error) {
-      console.error('마이페이지 데이터 패치 에러', error);
+      console.error('그룹페이지 데이터 패치 에러', error);
     }
   }
 
@@ -51,7 +51,8 @@ function Group() {
 
   //?email=${friendEmail}?id=6
   const fetchAddfriend = async (friendEmail) => {
-      axios.post(baseUrl+`/api/GroupPageAddFriend`, 
+    if(friendEmail !== ''){
+      await axios.post(baseUrl+`/api/GroupPageAddFriend`, 
         {
           "setting" : friendEmail,
           "id" : 6,
@@ -63,8 +64,11 @@ function Group() {
         }
        
       )
-        .then(res => setfetchingData(true))
+        .then(res => setfetchingData(!fetchingData))
         .catch(err => console.log(err))
+    }
+
+
   }
 
   const handleEmail = (e) => {

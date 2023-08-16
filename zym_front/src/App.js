@@ -16,12 +16,12 @@ function App() {
     <BrowserRouter>
     <GlobalStyles/> 
     <Routes>
-      <Route path="/:id" element={<Home/>}/>
+      <Route path="/home/:id" element={<Home/>}/>
       <Route path="/my" element={<My/>}/>
       <Route path="/setting" element={<Setting/>}/>
       <Route path="/group" element={<Group/>}/>
       <Route path="/calendar" element={<Calendar/>}/>
-      <Route path="/login" element={<LoginPage/>}/>
+      <Route path="/" element={<LoginPage/>}/>
       <Route path="/friend/:id" element={<FriendsMy/>}/>
     </Routes>
   </BrowserRouter>
